@@ -1,0 +1,42 @@
+.nav-btns-container {
+    /* This container is grid child, so align-self can be used */
+    align-self: center;
+    /* Make it take up full width of container */
+    justify-self: stretch;
+    /* Make it appear above the slides */
+    z-index: 1;
+
+    display: flex;
+    justify-content: space-between;
+    padding-inline: 1em;
+
+    /* Let pointer events pass through container */
+    /* since it sits on top of the slides and could interfere with dragging */
+    pointer-events: none;
+}
+
+.prev-btn,
+.next-btn {
+	/* Let the btns in the container retain pointer functionality */
+    pointer-events: initial;
+
+    font-size: 1.5em;
+    font-weight: bold;
+
+    width: 1.8em;
+    height: 1.8em;
+    border-radius: 50%;
+    /* var is defined in index.module.css */
+    box-shadow: 0 0.1em 1em -0.2em black;
+
+    cursor: pointer;
+
+    color: var(--fg);
+    background-color: color-mix(in srgb, var(--bg), transparent);
+    backdrop-filter: blur(10px);
+}
+
+:is(.prev-btn, .next-btn)[aria-disabled="true"] {
+    background-color: color-mix(in srgb, var(--bg), transparent 70%);
+    color: color-mix(in srgb, var(--fg), transparent 70%);
+}

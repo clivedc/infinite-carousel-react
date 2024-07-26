@@ -1,0 +1,42 @@
+* {
+	padding: 0px;
+	margin: 0px;
+	box-sizing: border-box;
+}
+
+:root {
+	--fg-dark: #f2f2fa;
+	--bg-dark: #1b1b1b;
+	--fg-light: var(--bg-dark);
+	--bg-light: var(--fg-dark);
+	--fg: var(--fg-light);
+	--bg: var(--bg-light);
+
+	--outln: 2.5px solid var(--fg);
+	--outln-offset: 3px;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--fg: var(--fg-dark);
+		--bg: var(--bg-dark);
+	}
+}
+
+*:focus-visible {
+	outline: var(--outln);
+	outline-offset: var(--outln-offset);
+}
+
+body {
+	background-color: var(--bg);
+	color: var(--fg);
+}
+
+button {
+	border: none;
+}
+
+button:disabled, button[aria-disabled="true"] {
+	cursor: not-allowed;
+}

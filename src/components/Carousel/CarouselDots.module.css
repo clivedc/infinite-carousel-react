@@ -1,0 +1,48 @@
+.carousel-dots-container {
+    align-self: end;
+    margin-bottom: 1.5em;
+    z-index: 1;
+
+    display: grid;
+    grid-auto-flow: column;
+    gap: 0.7em;
+    padding: 0.6em 0.8em;
+
+    /* Pill shape */
+    border-radius: 100rem;
+
+    background-color: color-mix(in srgb, var(--bg), transparent);
+    backdrop-filter: blur(10px);
+    /* var is defined in index.module.css */
+    box-shadow: 0 0.1em 1em -0.4em black;
+
+    contain: content;
+}
+
+.carousel-dot {
+    --dot-width: 0.6em;
+
+    display: block;
+    cursor: pointer;
+
+    width: var(--dot-width);
+    height: var(--dot-width);
+
+    /* Pill shape */
+    border-radius: 100rem;
+    border: none;
+
+    background-color: var(--fg);
+
+    transition: width 200ms;
+}
+
+.carousel-dots-container:has(.carousel-dot:focus-visible) {
+/* .carousel-dots-container:focus-within { */
+    outline: var(--outln);
+    outline-offset: var(--outln-offset);
+}
+
+.carousel-dot[aria-selected="true"] {
+	width: calc(var(--dot-width) * 2);
+}

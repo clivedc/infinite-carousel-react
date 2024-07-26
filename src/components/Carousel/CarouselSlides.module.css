@@ -1,0 +1,33 @@
+.carousel-track {
+    /* --transition-duration: 500ms; */
+    --transition-bezier: cubic-bezier(0.16, 0.51, 0.2, 1);
+    --transition-easing: var(--transition-bezier);
+
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 100%;
+
+    user-select: none;
+
+    /* --slide-no defined in jsx */
+    transform: translateX(calc(var(--slide-no) * -100%));
+    /* --transition-bezier is defined in parent */
+    transition: transform var(--transition-duration) var(--transition-easing);
+}
+
+.carousel-track[data-is-dragging="true"] {
+	--transition-duration: 100ms;
+	--transition-easing: linear;
+
+	cursor: grab;
+}
+
+[aria-roledescription="slide"]:first-child[data-appended-to-end-of-track="true"] {
+	/* --total-slides is set in jsx in index.tsx */
+	transform: translateX(calc(var(--total-slides) * 100%));
+}
+
+[aria-roledescription="slide"]:last-child[data-prepended-to-start-of-track="true"] {
+	/* --total-slides is set in jsx in index.tsx */
+	transform: translateX(calc(var(--total-slides) * -100%));
+}
