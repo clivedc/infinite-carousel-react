@@ -22,7 +22,6 @@ export async function animateFromLastToFirst(
                 `translateX(${prevTransformX}px)`,
                 `translateX(calc(${totalSlides} * -100%))`,
             ],
-            // transform: `translateX(calc(${totalSlides} * -100%))`,
         },
         {
             duration: animationDurationInMs,
@@ -76,7 +75,6 @@ export async function animateFromFirstToLast(
     const animation = slidesTrack.animate(
         {
             transform: [`translateX(${prevTransformX}px)`, `translateX(100%)`],
-            // transform: `translateX(calc(${totalSlides} * -100%))`,
         },
         {
             duration: animationDurationInMs,
