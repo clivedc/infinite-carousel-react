@@ -8,6 +8,7 @@ class CarouselDragEvtHandlers {
     #initialCursorX = 0;
     #dragDeltaX = 0;
     #slidesTrackDimensions: DOMRect | undefined;
+    #pointerMoveActive = false;
     // Needed to avoid quering the DOM on every pointer move instance
     #firstSlideHasBeenAppendedToEndOfTrack = false;
     #lastSlideHasBeenPrependedToStartOfTrack = false;
@@ -38,6 +39,7 @@ class CarouselDragEvtHandlers {
         slidesTrack.addEventListener(
             "transitionend",
             () => {
+                if (this.#pointerMoveActive) return;
                 firstSlide.dataset.appendedToEndOfTrack = "false";
                 this.#firstSlideHasBeenAppendedToEndOfTrack = false;
             },
@@ -53,6 +55,7 @@ class CarouselDragEvtHandlers {
         slidesTrack.addEventListener(
             "transitionend",
             () => {
+                if (this.#pointerMoveActive) return;
                 lastSlide.dataset.prependedToStartOfTrack = "false";
                 this.#lastSlideHasBeenPrependedToStartOfTrack = false;
             },
@@ -73,6 +76,7 @@ class CarouselDragEvtHandlers {
         this.#lastSlideHasBeenPrependedToStartOfTrack = this.#lastSlide.dataset.prependedToStartOfTrack === "true";
         // Get initial pos relative to carousel
         this.#initialCursorX = ev.clientX - this.#slidesTrackDimensions.left;
+        this.#pointerMoveActive = true;
 
         setIsDragging("true");
     };
@@ -133,6 +137,7 @@ class CarouselDragEvtHandlers {
         if (!this.#slidesTrack || !this.#firstSlide || !this.#lastSlide) return;
 
         setIsDragging("false");
+        this.#pointerMoveActive = false;
 
         // Reset track styles set in pointer move
         requestAnimationFrame(() => {
@@ -152,7 +157,7 @@ class CarouselDragEvtHandlers {
                 this.#dragDeltaX < 0 ? setNextSlide() : setPrevSlide();
             });
         } else {
-            if (!this.#isInfinite) return;
+        	if (!this.#isInfinite) return;
 
             if (this.#firstSlideHasBeenAppendedToEndOfTrack) {
                 this.#resetFirstSlideStylesAfterDrag(
