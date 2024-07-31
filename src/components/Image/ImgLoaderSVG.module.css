@@ -1,0 +1,36 @@
+.svgWrapper {
+	display: grid;
+	place-content: center;
+	background-color: var(--bg-alt);
+}
+
+.imgHasLoaded {
+	pointer-events: none;
+	animation: disappear 0.8s forwards;
+}
+
+.imgPath {
+	stroke: var(--fg);
+    stroke-dasharray: 93;
+    stroke-dashoffset: 93;
+    animation: fill-stroke 1.7s linear infinite;
+}
+
+.imgHasLoaded .imgPath {
+	animation-play-state: paused;
+}
+
+@keyframes fill-stroke {
+    to {
+        stroke-dashoffset: -93;
+    }
+}
+
+@keyframes disappear {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
