@@ -5,12 +5,15 @@
 }
 
 :root {
-	--fg-dark: #f2f2fa;
+	--fg-dark: #ebebeb;
 	--bg-dark: #1b1b1b;
+	--bg-dark-alt: #1f1f1f;
 	--fg-light: var(--bg-dark);
 	--bg-light: var(--fg-dark);
+	--bg-light-alt: #dbdbdb;
 	--fg: var(--fg-light);
 	--bg: var(--bg-light);
+	--bg-alt: var(--bg-light-alt);
 
 	--outln: 2.5px solid var(--fg);
 	--outln-offset: 3px;
@@ -20,6 +23,7 @@
 	:root {
 		--fg: var(--fg-dark);
 		--bg: var(--bg-dark);
+		--bg-alt: var(--bg-dark-alt);
 	}
 }
 
