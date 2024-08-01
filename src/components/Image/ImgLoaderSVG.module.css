@@ -16,10 +16,6 @@
     animation: fill-stroke 1.7s linear infinite;
 }
 
-.imgHasLoaded .imgPath {
-	animation-play-state: paused;
-}
-
 @keyframes fill-stroke {
     to {
         stroke-dashoffset: -93;
