@@ -22,12 +22,16 @@
 	cursor: grab;
 }
 
-[aria-roledescription="slide"]:first-child[data-appended-to-end-of-track="true"] {
+.carousel-track__slide {
+	display: grid;
+}
+
+.carousel-track__slide:first-child[data-appended-to-end-of-track="true"] {
 	/* --total-slides is set in jsx in index.tsx */
 	transform: translateX(calc(var(--total-slides) * 100%));
 }
 
-[aria-roledescription="slide"]:last-child[data-prepended-to-start-of-track="true"] {
+.carousel-track__slide:last-child[data-prepended-to-start-of-track="true"] {
 	/* --total-slides is set in jsx in index.tsx */
 	transform: translateX(calc(var(--total-slides) * -100%));
 }

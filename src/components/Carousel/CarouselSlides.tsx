@@ -96,6 +96,7 @@ const CarouselSlides = forwardRef<SlidesRefHandle, SlideProps>(function Slides(
             {Children.map(children, (child, index) => (
                 <div
                     id={`carouselSlide-${index + 1}`}
+                    className={styles["carousel-track__slide"]}
                     ref={
                         (index === 0 && firstSlideRef) ||
                         (index === totalSlides - 1 && lastSlideRef) ||
