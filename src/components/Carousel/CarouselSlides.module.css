@@ -3,6 +3,10 @@
     --transition-bezier: cubic-bezier(0.16, 0.51, 0.2, 1);
     --transition-easing: var(--transition-bezier);
 
+	/* place-content is set to center .carousel-container */
+	/* so we need to set place-self to stretch to undo that */
+	place-self: stretch;
+
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: 100%;
