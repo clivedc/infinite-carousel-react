@@ -2,6 +2,7 @@
 	display: grid;
 	place-content: center;
 	background-color: var(--bg-alt);
+	cursor: wait;
 }
 
 .imgHasLoaded {
