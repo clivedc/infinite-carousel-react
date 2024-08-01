@@ -12,8 +12,8 @@ interface ImageTypeProps extends ComponentPropsWithoutRef<"img"> {
 }
 
 function Image({
-    width = "100%",
-    height = "100%",
+    width = "initial",
+    height = "initial",
     lazy,
     src,
     ...restProps
