@@ -1,5 +1,4 @@
 .carousel-track {
-    /* --transition-duration: 500ms; */
     --transition-bezier: cubic-bezier(0.16, 0.51, 0.2, 1);
     --transition-easing: var(--transition-bezier);
 
@@ -27,6 +26,8 @@
 }
 
 .carousel-track__slide {
+	/* Automatically make child stretch to full width and height */
+	/* without having to explicitly set width and height on child */
 	display: grid;
 }
 
