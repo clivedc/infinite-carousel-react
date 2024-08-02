@@ -1,6 +1,7 @@
 .nav-btns-container {
     /* This container is grid child, so align-self can be used */
-    align-self: center;
+    align-self: end;
+    margin-bottom: 1em;
     /* Make it appear above the slides */
     z-index: 1;
 
