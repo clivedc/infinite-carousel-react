@@ -2,6 +2,7 @@
 	/* Used for positioning buttons and dots */
 	position: relative;
 	overflow: hidden;
+	max-width: 100%;
 
 	display: grid;
 	grid-template-areas: "carousel-stack";
