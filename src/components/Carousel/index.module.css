@@ -5,7 +5,6 @@
 
 	display: grid;
 	grid-template-areas: "carousel-stack";
-	justify-items: center;
 
 	/* prevent default browser touch behaviour on carousel */
 	/* needed to make dragging work on mobile */
