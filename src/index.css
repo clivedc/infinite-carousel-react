@@ -35,6 +35,10 @@
 body {
 	background-color: var(--bg);
 	color: var(--fg);
+
+	height: 100vh;
+	display: grid;
+	place-content: center;
 }
 
 button {
