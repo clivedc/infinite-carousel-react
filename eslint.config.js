@@ -1,7 +1,6 @@
 import eslint from "@eslint/js";
 import tsEslint from "typescript-eslint";
 import globals from "globals";
-// import reactRecommended from "eslint-plugin-react/configs/recommended.js";
 import react from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import eslintConfigPrettier from "eslint-config-prettier";
@@ -13,13 +12,12 @@ export default [
 	},
 	eslint.configs.recommended,
 	...tsEslint.configs.recommended,
-	// reactRecommended,
+	// React rules
 	{
 		plugins: {
 			react,
 			'react-hooks': fixupPluginRules(reactHooks),
 		},
-		// rules: reactHooks.configs.recommended.rules,
 		languageOptions: {
 			parserOptions: {
 				ecmaFeatures: {
@@ -36,7 +34,9 @@ export default [
 			version: "detect",
 		},
 	},
+	// Prettier rules
 	eslintConfigPrettier,
+	// General rules to override previous rules
     {
         languageOptions: {
             globals: {
