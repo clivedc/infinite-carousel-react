@@ -89,8 +89,8 @@ const CarouselSlides = forwardRef<SlidesRefHandle, SlideProps>(function Slides(
             role="group"
             aria-live="polite"
             aria-atomic="true"
-            onPointerDown={(ev) => dragEvtHandlers.onPointerDown(ev, setIsDragging)}
-            onPointerMove={(ev) => dragEvtHandlers.onPointerMove(ev, slideNo, totalSlides)}
+            onPointerDown={(ev) => dragEvtHandlers.onPointerDown(ev, setIsDragging, slideNo, totalSlides)}
+            onPointerMove={(ev) => dragEvtHandlers.onPointerMove(ev, slideNo)}
             onPointerUp={() => dragEvtHandlers.onPointerUp(setIsDragging, setNextSlide, setPrevSlide)}
         >
             {Children.map(children, (child, index) => (

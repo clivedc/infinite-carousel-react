@@ -9,6 +9,10 @@ class CarouselDragEvtHandlers {
     #dragDeltaX = 0;
     #slidesTrackDimensions: DOMRect | undefined;
     #pointerMoveActive = false;
+    #isOnFirstSlide = true;
+    #isOnLastSlide = false;
+    #isGoingFromFirstSlideToLastSlide = false;
+    #isGoingFromLastSlideToFirstSlide = false;
     // Needed to avoid quering the DOM on every pointer move instance
     #firstSlideHasBeenAppendedToEndOfTrack = false;
     #lastSlideHasBeenPrependedToStartOfTrack = false;
@@ -39,9 +43,14 @@ class CarouselDragEvtHandlers {
         slidesTrack.addEventListener(
             "transitionend",
             () => {
-                if (this.#pointerMoveActive) return;
+                if (
+                    this.#pointerMoveActive ||
+                    this.#isGoingFromLastSlideToFirstSlide
+                )
+                    return;
                 firstSlide.dataset.appendedToEndOfTrack = "false";
                 this.#firstSlideHasBeenAppendedToEndOfTrack = false;
+                this.#isGoingFromLastSlideToFirstSlide = false;
             },
             { once: true },
         );
@@ -55,9 +64,14 @@ class CarouselDragEvtHandlers {
         slidesTrack.addEventListener(
             "transitionend",
             () => {
-                if (this.#pointerMoveActive) return;
+                if (
+                    this.#pointerMoveActive ||
+                    this.#isGoingFromFirstSlideToLastSlide
+                )
+                    return;
                 lastSlide.dataset.prependedToStartOfTrack = "false";
                 this.#lastSlideHasBeenPrependedToStartOfTrack = false;
+                this.#isGoingFromFirstSlideToLastSlide = false;
             },
             { once: true },
         );
@@ -66,17 +80,27 @@ class CarouselDragEvtHandlers {
     onPointerDown = (
         ev: PointerEvent,
         setIsDragging: React.Dispatch<React.SetStateAction<"true" | "false">>,
+        slideNo: number,
+        totalSlides: number,
     ) => {
         this.#slidesTrack = this.#getSlidesTrack(ev);
         this.#firstSlide = this.#getFirstSlide(this.#slidesTrack);
         this.#lastSlide = this.#getLastSlide(this.#slidesTrack);
 
         this.#slidesTrackDimensions = this.#slidesTrack.getBoundingClientRect();
-        this.#firstSlideHasBeenAppendedToEndOfTrack = this.#firstSlide.dataset.appendedToEndOfTrack === "true";
-        this.#lastSlideHasBeenPrependedToStartOfTrack = this.#lastSlide.dataset.prependedToStartOfTrack === "true";
         // Get initial pos relative to carousel
         this.#initialCursorX = ev.clientX - this.#slidesTrackDimensions.left;
         this.#pointerMoveActive = true;
+
+        // Reset some vars
+        this.#isOnFirstSlide = slideNo === 0;
+        this.#isOnLastSlide = slideNo === totalSlides - 1;
+        this.#firstSlideHasBeenAppendedToEndOfTrack =
+            this.#firstSlide.dataset.appendedToEndOfTrack === "true";
+        this.#lastSlideHasBeenPrependedToStartOfTrack =
+            this.#lastSlide.dataset.prependedToStartOfTrack === "true";
+        this.#isGoingFromFirstSlideToLastSlide = false;
+        this.#isGoingFromLastSlideToFirstSlide = false;
 
         setIsDragging("true");
     };
@@ -84,7 +108,6 @@ class CarouselDragEvtHandlers {
     onPointerMove = (
         ev: PointerEvent,
         slideNo: number,
-        totalSlides: number,
     ) => {
         // If left mouse btn isn't being clicked while dragging then do nothing
         if (ev.buttons !== 1) return;
@@ -105,18 +128,16 @@ class CarouselDragEvtHandlers {
             if (!this.#slidesTrack || !this.#firstSlide || !this.#lastSlide)
                 return;
 
-            const isOnFirstSlide = slideNo === 0;
-            const isOnLastSlide = slideNo === totalSlides - 1;
             const isDraggingToTheLeft = this.#dragDeltaX < 0;
             const isDraggingToTheRight = this.#dragDeltaX > 0;
 
-            if (isOnLastSlide && isDraggingToTheLeft) {
+            if (this.#isOnLastSlide && isDraggingToTheLeft) {
                 if (!this.#isInfinite) return;
                 if (!this.#firstSlideHasBeenAppendedToEndOfTrack) {
                     this.#firstSlide.dataset.appendedToEndOfTrack = "true";
                     this.#firstSlideHasBeenAppendedToEndOfTrack = true;
                 }
-            } else if (isOnFirstSlide && isDraggingToTheRight) {
+            } else if (this.#isOnFirstSlide && isDraggingToTheRight) {
                 if (!this.#isInfinite) return;
                 if (!this.#lastSlideHasBeenPrependedToStartOfTrack) {
                     this.#lastSlide.dataset.prependedToStartOfTrack = "true";
@@ -148,28 +169,37 @@ class CarouselDragEvtHandlers {
         // if users dragged more than 100px in either direction
         // then change slide
         if (Math.abs(this.#dragDeltaX) > 100) {
-            // This needs to fire after isDragging state changes
-            // so that the right animation duration is returned when queried
-            // (animation duration is set to 100ms when dragging) in the functions
-            // animateFromFirstToLast and animateFromLastToFirst.
-            // This is done by introducing a little delay by executing it as a microtask
-            queueMicrotask(() => {
-                this.#dragDeltaX < 0 ? setNextSlide() : setPrevSlide();
-            });
-        } else {
-        	if (!this.#isInfinite) return;
-
-            if (this.#firstSlideHasBeenAppendedToEndOfTrack) {
-                this.#resetFirstSlideStylesAfterDrag(
-                    this.#slidesTrack,
-                    this.#firstSlide,
-                );
-            } else if (this.#lastSlideHasBeenPrependedToStartOfTrack) {
-                this.#resetLastSlideStylesAfterDrag(
-                    this.#slidesTrack,
-                    this.#lastSlide,
-                );
+            if (this.#dragDeltaX < 0) {
+                // This needs to fire after isDragging state changes
+                // so that the right animation duration is returned when queried
+                // (animation duration is set to 100ms when dragging) in the functions
+                // animateFromFirstToLast and animateFromLastToFirst.
+                // This is done by introducing a little delay by executing it as a microtask
+                queueMicrotask(() => setNextSlide());
+                if (this.#isInfinite && this.#isOnLastSlide) {
+                    this.#isGoingFromLastSlideToFirstSlide = true;
+                }
+            } else {
+                // Same as comment above
+                queueMicrotask(() => setPrevSlide());
+                if (this.#isInfinite && this.#isOnFirstSlide) {
+                    this.#isGoingFromFirstSlideToLastSlide = true;
+                }
             }
+        }
+
+        if (!this.#isInfinite) return;
+
+        if (this.#firstSlideHasBeenAppendedToEndOfTrack) {
+            this.#resetFirstSlideStylesAfterDrag(
+                this.#slidesTrack,
+                this.#firstSlide,
+            );
+        } else if (this.#lastSlideHasBeenPrependedToStartOfTrack) {
+            this.#resetLastSlideStylesAfterDrag(
+                this.#slidesTrack,
+                this.#lastSlide,
+            );
         }
     };
 }
