@@ -35,10 +35,13 @@
 body {
 	background-color: var(--bg);
 	color: var(--fg);
+}
 
+#root {
 	height: 100vh;
 	display: grid;
-	place-content: center;
+	grid-auto-columns: 100vw;
+	place-items: center;
 }
 
 button {
