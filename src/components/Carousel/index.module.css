@@ -5,6 +5,9 @@
 	max-width: 100%;
 	border-radius: 14px;
 
+	width: var(--width, initial);
+	height: var(--height, initial);
+
 	display: grid;
 	grid-template-areas: "carousel-stack";
 

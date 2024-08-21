@@ -62,8 +62,8 @@ export default function Carousel({
                     "--slide-no": slideNo,
                     "--transition-duration": `${animationDuration}ms`,
                     "--total-slides": totalSlides,
-                    width,
-                    height,
+                    "--width": width,
+                    "--height": height,
                 } as React.CSSProperties
             }
             className={styles["carousel-container"]}
