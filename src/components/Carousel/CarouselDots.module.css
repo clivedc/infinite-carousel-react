@@ -1,7 +1,7 @@
 .carousel-dots-container {
     justify-self: center;
     align-self: end;
-    margin-bottom: 1.5em;
+    margin-bottom: 1.3em;
     z-index: 1;
 
     display: grid;
