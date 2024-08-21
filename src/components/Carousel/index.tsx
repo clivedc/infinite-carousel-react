@@ -78,9 +78,9 @@ export default function Carousel({
                 setPrevSlide={setPrevSlide}
             />
             <CarouselNavBtns
-            	slideNo={slideNo}
-            	totalSlides={totalSlides}
-            	isInfinite={isInfinite}
+                slideNo={slideNo}
+                totalSlides={totalSlides}
+                isInfinite={isInfinite}
                 setNextSlide={setNextSlide}
                 setPrevSlide={setPrevSlide}
             />
